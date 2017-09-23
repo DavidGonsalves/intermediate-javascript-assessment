@@ -45,6 +45,14 @@ function noWeakLink() {
   })
   // CODE HERE...
 
+  .then(function(res){
+    console.log(res.data)
+    firstUser = res.data[0]
+    return res;
+  }).then(function(res){
+    thirdUser = res.data[2]
+    return res.data[9];
+  })
 }
 
 
@@ -60,8 +68,7 @@ function noWeakLink() {
 // 'My name is ' + this.name + ' and I am very heavy!'
 
 // You must use explicit binding.
-// In a variable called boundToElephant,
-// assign it the value of the large function BOUND to the elephant object.
+// In a variable called boundToElephant, assign it the value of the large function BOUND to the elephant object.
 
 // When boundToElephant gets called, it should return this exact string:
 // 'My name is Horton and I am very heavy!' (The above instructions should make this work.  No code needed for this paragraph)
@@ -69,11 +76,14 @@ function noWeakLink() {
 var elephant = {
   name: 'Horton'
 }
+
 function large() {
 
   return 'My name is ' + this.name + ' and I am very heavy!'
 }
 // CODE HERE...
+
+var boundToElephant = large.bind(elephant);
 
 
 
@@ -89,22 +99,28 @@ function large() {
 
 // CODE HERE...
 
-
+function deathStar(fun, obj) {
+  return fun.bind(obj)
+}
 
 // *************
 // * PROBLEM 4 *
 // *************
 
 // Create a function called accountingOffice.
-// accountingOffice will take in a parameter:
-// assets (Number),
+// accountingOffice will take in a parameter: assets (Number),
 // then return a closure function:
+
 // The closure function will take in a parameter: liabilities (Number)
 // The closure function will return the combined value of assets and liabilities.
 
 // CODE HERE...
 
-
+function accountingOffice(assets) {
+  return function (liabilities) {
+    return liabilities + assets
+  }
+}
 
 // *************
 // * PROBLEM 5 *
@@ -115,8 +131,7 @@ function large() {
 
 // forgetter helps keep track of things people don't want to forget.
 // forgetter needs to return a function called rememberall.
-// rememberall takes in a parameter:
-// item (String).
+// rememberall takes in a parameter: item (String).
 
 // When rememberall is invoked, it will store the new item
 // to be remembered along with all other previous items remembered.
@@ -127,7 +142,24 @@ function large() {
 //     remember: << array of items to be remembered >>
 // };
 
-// CODE HERE...
+var eArray = []
+
+function forgetter(name) {
+  return function rememberall(item) {
+
+    if (item != 'broomstick') {
+      eArray.push(item)
+    }
+
+    var obj = {
+      name: name,
+      remember: eArray
+    }
+
+    return obj
+
+  }
+}
 
 
 
@@ -153,6 +185,50 @@ function large() {
 //   danger: (modified danger value)
 // }
 
-// NOTE: Neither hunger nor danger should be able to exceed 100 or drop below 0.
+// NOTE: Neither hunger nor danger should be able to exceed 100 or drop below 
 
-// CODE HERE...
+function frodo(startingHungerValue, startingDangerValue) {
+
+  var hunger = startingHungerValue;
+  var danger = startingDangerValue;
+
+  return {
+    dinnerOverFire: function () {
+      var newHunger = hunger -= 25
+
+      if (newHunger < 0) {
+        newHunger = 0
+      }
+
+      var newDanger = danger += 40
+
+      if (newDanger > 100) {
+        newDanger = 100
+      }
+
+      return {
+        hunger: newHunger,
+        danger: newDanger
+      }
+    },
+    hidingInBush: function () {
+
+      var newHunger = hunger += 35
+
+      if (newHunger > 100) {
+        newHunger = 100
+      }
+
+      var newDanger = danger -= 20
+
+      if (newDanger < 0) {
+        newDanger = 0
+      }
+
+      return {
+        hunger: newHunger,
+        danger: newDanger
+      }
+    }
+  }
+}
